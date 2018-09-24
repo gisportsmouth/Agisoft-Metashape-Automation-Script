@@ -4,8 +4,9 @@ v6.2 31/08/2018
 
 Incorporating USGS Workflow
 
-    len(chunk.point_cloud.points) - valid ties
-    len(chunk.point_cloud.tracks) - all ties
+Needs to be run in one session due to need to get total points
+    before gradual selection. Will be changed in next version to use 
+    tracks rather than ties for total_points.
 """
 
 import PhotoScan
