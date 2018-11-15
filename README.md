@@ -1,2 +1,2 @@
-# PS_Automation_Script
+# PS Automation Script
 See code for instructions
