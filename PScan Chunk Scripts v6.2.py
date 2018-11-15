@@ -1,12 +1,73 @@
 """
 Created by M.Schaefer
 v6.2 31/08/2018
-
 Incorporating USGS Workflow
 
-Needs to be run in one session due to need to get total points
-    before gradual selection. Will be changed in next version to use 
-    tracks rather than ties for total_points.
+To do:
+    Currently needs to be run as one session, valid ties not accessible after 
+    gradual selection. To be fixed in next version using tracks.
+    
+    len(chunk.point_cloud.points) - valid ties
+    len(chunk.point_cloud.tracks) - all ties
+
+    export: if tiff to large process error to log and continue
+    
+    
+With gradual selection:
+    After alignment the model is optimised and then a gradual selection is run.
+    After the align process all tie points have errors attached
+            to them. The values used are a matter of debate. 
+            Rec Uncert is normally set to 10 and run only once. If 
+            the value of 10 selects more than 50% of the tie points the value 
+            self-adjusts to less than 50%.
+            Proj acc is set to start at 2 and self adjusts so less 
+            than 50% of the tie points left after Rec Uncert are selected.
+            For Reprojection Error the aim is to select up to a set percentage 
+            (default 80) of the initial tie points. The value used is self 
+            selecting. The selection process is in steps of 10% and optimisation
+            is run after each step.
+            Values used are saved in the log file.
+            
+Without gradual selection:
+    After alignment the model is optimised once.
+    
+3D Model/Geo: Geo basically is anything where the photos have coordinates or 
+    if using Ground Control Points(GCP). If you have photos of objects without 
+    that info use 3D Model
+    
+Set-up workflow:
+1. Set up your chunk(s)
+    import images
+    name chunks (optional - helps in sorting the output)
+    save a copy of the PS Doc
+
+Custom workflow:
+2. (Geo) Set reference system for each chunk
+3. Load script
+    chose output folder
+    chose file prefix (this gets added to each output file - helps if trying different settings)
+4. Under "Change Values" select "Get Current Parameter info" (check console window for output)
+    check image quality threshold
+    check filtering (options: Mild (default), Moderate, Aggressive, none)
+    (Geo) check export CRS (in case you want the output to be different from the CRS of the camera/GCP)
+
+No GCP or checking alignment - runs whole process and exports:
+5a. (Geo) Choose "Custom":"Run - Geo" (with or without gradual selection)
+or
+5b. (3D Model) Choose "Custom":"Run - 3D Model" (with or without gradual selection)
+
+With GCP or scales or if wanting to check alignment:
+5. Choose "Custom":"Align only" (with or without gradual selection)
+6. Set up GCP for each chunk or set scale
+7. Check alignment
+8a. (Geo) Choose "Custom":"Run all after alignment - Geo" (with or without gradual selection)
+or
+8b. (3D Model) Choose "Custom":"Run all after alignment - 3D Model" (with or without gradual selection)
+
+Files generated depend on method used (3D or Geo) and input photos.
+
+To run methods individually as well after opening the script, in console type 
+    "ps_doc." and then hit "TAB" to see the options.
 """
 
 import PhotoScan
@@ -227,7 +288,7 @@ class PS_Proc(object):
         Dependencie: iterate_grad()
         
         Description: After the align process all tie points have errors attached
-            to them. The values used are a matter of debate This 
+            to them. The values used are a matter of debate. This 
             method will eliminate tie points based on Reconstruction 
             Uncertainty and Projection Accuracy; Reprojection Error is handled 
             separately. Rec Uncert is normally set to 10 and run only once. If 
