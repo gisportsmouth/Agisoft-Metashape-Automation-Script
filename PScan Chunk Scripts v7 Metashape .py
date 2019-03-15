@@ -11,10 +11,11 @@ Change log:
     
 To do:
     Currently needs to be run as one session, valid ties not accessible after 
-    gradual selection. To be fixed in next version using tracks.
+    gradual selection. To be explored in future version using tracks. But then 
+    percentages are of all tracks, not the initial valid ones. 
     
-    len(chunk.point_cloud.points) - valid ties
-    len(chunk.point_cloud.tracks) - all ties
+        len(chunk.point_cloud.points) - valid ties
+        len(chunk.point_cloud.tracks) - all ties
 
     export: if tiff too large for export process error to log and continue
     
