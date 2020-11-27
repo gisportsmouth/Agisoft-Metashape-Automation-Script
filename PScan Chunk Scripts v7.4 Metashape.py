@@ -16,6 +16,8 @@ Change log:
         Added matching accuracy and depth map quality to main class, and a 
             custom menu to set these with checks if the user entered values are 
             options Metashape supports.
+        export: if tiff too large for export try to export as BigTIFF
+             anf if that fails log error and continue
     v7.3 
         Update to 1.6 Python API changes
         For matching accuracy the correspondence should be the following:
