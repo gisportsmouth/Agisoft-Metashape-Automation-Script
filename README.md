@@ -1,2 +1,2 @@
-# PS Automation Script
+# Metashape Automation Script
 See code for instructions
